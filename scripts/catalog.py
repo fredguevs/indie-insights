@@ -1,4 +1,5 @@
 import requests
+import time
 
 # data should look like:
 # {
@@ -24,7 +25,7 @@ def get_catalog():
 
         app_details = requests.get(appinfo_url).json()
 
-        appid = f"{app_id}"
+        appid = str(app_id)
 
         if app_details[appid]['success'] != False:
             game_info = app_details[appid]["data"]
@@ -33,8 +34,21 @@ def get_catalog():
 
             game_date = ""
 
-            if game_info["is_free"] == False and game_info["release_date"]["coming_soon"] == False:
+            if not game_info["is_free"] and not game_info["release_date"]["coming_soon"]:
                 game_date = game_info["release_date"]["date"]
-                game_price = game_info["price_overview"]["final"]
 
-            print(game_price)
+                # Safely check for price_overview key
+                if "price_overview" in game_info:
+                    # Convert cents to dollars
+                    game_price = game_info["price_overview"]["final"] / 100.0
+                else:
+                    continue
+
+                print(f"App ID: {appid}, Name: {app_name}, Release Date: {
+                      game_date}, Price: {game_price}")
+                
+    
+        
+        time.sleep(0.1)
+
+            # print(game_price)
