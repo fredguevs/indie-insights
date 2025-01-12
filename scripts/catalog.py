@@ -3,6 +3,7 @@ import requests
 import time
 
 from utils.game_details import process_details
+from utils.game_reviews import process_reviews
 
 # data should look like:
 # {
@@ -25,7 +26,9 @@ def get_catalog():
         app_name = app["name"]
 
         # Retrieve and store app_id, name, date, price
-        process_details(app_id, app_name)
+        # process_details(app_id, app_name)
+
+        process_reviews(app_id, app_name)
         
         time.sleep(0.1)
 
